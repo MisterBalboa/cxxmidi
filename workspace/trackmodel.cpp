@@ -4,23 +4,28 @@
 #include <cxxmidi/note.hpp>
 #include <cxxmidi/utils.hpp>
 
+#include "harp.h"
+
 const char * TrackModel::columnNames[] =
 {
     "Dt [ticks]",
     "Data",
     "Type",
     "Description",
-    "Harmonica"
+    "Harp"
 };
 
 TrackModel::TrackModel(QObject * parent_)
     : QAbstractTableModel(parent_)
     , _track(0)
+    , _key(69)
 {
 }
 
 
-TrackModel::~TrackModel() {}
+TrackModel::~TrackModel()
+{
+}
 
 
 Qt::ItemFlags TrackModel::flags(const QModelIndex & index_) const
@@ -225,6 +230,28 @@ QVariant TrackModel::data(const QModelIndex & index_, int role_) const
             r+="]";
             break;
         }
+        case COLUMN_HARP:
+        {
+            uint8_t type;
+            if(event->size())
+                type = event->at(0);
+            else
+                break;
+
+            if( (type & 0xf0)  == CxxMidi::Event::NoteOn)
+            {
+                if (event->size()<=2)
+                    break;
+                int note = event->at(1);
+
+                Harp harp(_key);
+                r = QString(harp.howToPlay(note).c_str());
+            }
+            else
+                r = "x";
+
+            break;
+        }
         default: r=QString("row: %1, col: %2").arg(row).arg(col); break;
         }
 
@@ -271,7 +298,7 @@ QVariant TrackModel::headerData(int section_, Qt::Orientation orientation_, int 
         case COLUMN_DT:
         case COLUMN_DESCR:
         case COLUMN_TYPE:
-        case COLUMN_HARMONICA:
+        case COLUMN_HARP:
             return QVariant(columnNames[section_]);
         default: return QVariant();
         }

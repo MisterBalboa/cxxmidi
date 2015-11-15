@@ -15,7 +15,7 @@ class TrackModel : public QAbstractTableModel
         COLUMN_DATA      = 1,
         COLUMN_TYPE      = 2,
         COLUMN_DESCR     = 3,
-        COLUMN_HARMONICA = 4,
+        COLUMN_HARP      = 4,
         COLUMN_TOTAL     = 5,
     };
 
@@ -37,6 +37,8 @@ public:
     bool setData(const QModelIndex & index_, const QVariant & value_, int role_);
 
     void setTrack(CxxMidi::Track* track_);
+    CxxMidi::Track* track() { return _track; }
+    void setKey(int key_) { _key = key_; }
 
     void addEvent(int num_);
     void removeEvent(int num_);
@@ -44,6 +46,7 @@ public:
 private:
 
     CxxMidi::Track* _track;
+    int _key;
 };
 
 #endif // TRACKMODEL_H

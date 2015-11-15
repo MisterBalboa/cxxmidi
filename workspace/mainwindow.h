@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QActionGroup>
 
 #include "filemodel.h"
 #include "fileview.h"
@@ -9,6 +10,7 @@
 #include "trackview.h"
 
 #include <cxxmidi/file.hpp>
+#include <cxxmidi/output/default.hpp>
 
 namespace Ui {
 class MainWindow;
@@ -31,12 +33,17 @@ private slots:
     void onRequestAddEvent(int num_);
     void onRequestDeleteEvent(int num_);
     void onKeyChange(int key_);
+    void onOutputSelected(QAction* action_);
+    void setOutput(int num_);
+    void eventsSelected(const QItemSelection& selected_,
+                        const QItemSelection& deselected_);
 
 private:
 
     void createMenu();
 
     Ui::MainWindow *_ui;
+    QActionGroup * _outputsActionGroup;
 
     FileModel _fileModel;
     FileView _fileView;
@@ -44,6 +51,7 @@ private:
     TrackView _trackView;
 
     CxxMidi::File _file;
+    CxxMidi::Output::Default* _midiOutput;
 };
 
 #endif // MAINWINDOW_H

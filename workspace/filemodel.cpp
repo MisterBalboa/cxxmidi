@@ -1,6 +1,7 @@
 #include "filemodel.h"
 
-FileModel::FileModel(QObject *parent_) : QAbstractListModel(parent_) {}
+FileModel::FileModel(QObject *parent_)
+    : QAbstractListModel(parent_) {}
 
 
 FileModel::~FileModel() {}
