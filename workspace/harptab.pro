@@ -6,13 +6,11 @@
 
 QT       += gui widgets
 
-TARGET = test
+TARGET = harptab
 
 TEMPLATE = app
 
 INCLUDEPATH += "../include"
-
-SOURCES += main.cpp 
 
 HEADERS += \
     ../include/cxxmidi/time/duration.hpp\
@@ -38,14 +36,28 @@ HEADERS += \
     ../include/cxxmidi/guts/mutex.hpp\
     ../include/cxxmidi/event.hpp \
     ../include/cxxmidi/instrument.hpp \
-    ../include/cxxmidi/note.hpp
+    ../include/cxxmidi/note.hpp \
+    filemodel.h \
+    fileview.h \
+    trackmodel.h \
+    trackview.h \
+    mainwindow.h \
+    harp.h
 
-FORMS += 
+SOURCES += main.cpp \ 
+    filemodel.cpp \
+    fileview.cpp \
+    trackmodel.cpp \
+    trackview.cpp \
+    mainwindow.cpp \
+    harp.cpp
+
+FORMS += \ 
+    mainwindow.ui
 
 unix:!macx {
     LIBS += /usr/lib/x86_64-linux-gnu/libasound.so
     DEFINES += CXXMIDI_LIL_ENDIAN
-    QMAKE_CXXFLAGS += -pedantic -Wall
 }
 win32 {
     LIBS += winmm.lib
