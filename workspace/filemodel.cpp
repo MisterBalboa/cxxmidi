@@ -8,10 +8,10 @@ FileModel::~FileModel() {}
 
 int FileModel::rowCount(const QModelIndex & /* index_ */) const
 {
-  if(_file)
-    return _file->tracks();
+    if(_file)
+        return _file->tracks();
 
-  return 0;
+    return 0;
 }
 
 
@@ -38,17 +38,43 @@ void FileModel::addTrack(int num_)
 
 QVariant FileModel::data(const QModelIndex & index_, int role_) const
 {
-  if(!index_.isValid())
-    return QVariant();
+    if(!index_.isValid())
+        return QVariant();
 
-  int row = index_.row();
+    int row = index_.row();
 
-  if(role_ == Qt::DisplayRole)
+    if(role_ == Qt::DisplayRole)
     {
-    CxxMidi::Track * track = &_file->at(row);
-    return QVariant(QString("%1. %2").arg(row)
-        .arg(track->getName().c_str()));
+        CxxMidi::Track * track = &_file->at(row);
+        return QVariant(QString("%1. %2").arg(row)
+                        .arg(track->getName().c_str()));
     }
 
-  return QVariant();
+    return QVariant();
+}
+
+void FileModel::clearTrack(int num_)
+{
+    CxxMidi::Track *track = &_file->at(num_);
+
+    CxxMidi::Track::iterator iter = track->begin();
+    while (iter != track->end())
+    {
+        CxxMidi::Event * event = &(*iter);
+
+        if(!event->size())
+        {
+            ++iter;
+            continue;
+        }
+
+        uint8_t type = event->at(0);
+
+        if( (type & 0xf0) != CxxMidi::Event::NoteOn)
+            iter = track->erase(iter);
+        else
+            ++iter;
+
+    }
+
 }

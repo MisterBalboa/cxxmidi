@@ -30,6 +30,7 @@ private slots:
     void onSaveAs();
     void onRequestAddTrack(int num_);
     void onRequestDeleteTrack(int num_);
+    void onRequestClear(int num_);
     void onRequestAddEvent(int num_);
     void onRequestDeleteEvent(int num_);
     void onKeyChange(int key_);

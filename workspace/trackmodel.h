@@ -42,6 +42,7 @@ public:
 
     void addEvent(int num_);
     void removeEvent(int num_);
+    void clearTrack(int num_);
 
 private:
 

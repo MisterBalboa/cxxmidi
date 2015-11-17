@@ -23,6 +23,8 @@ public:
   void removeTrack(int num_);
   void addTrack(int num_);
 
+  void clearTrack(int num_);
+
 private:
   CxxMidi::File * _file;
 };

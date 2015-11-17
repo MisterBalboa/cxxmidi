@@ -32,6 +32,8 @@ void FileView::showContextMenu(const QPoint& pos_)
         action->setData(2);
         action = myMenu.addAction(tr("Delete track"));
         action->setData(3);
+        action = myMenu.addAction(tr("Clear track"));
+        action->setData(4);
     }
 
     QPoint globalPos = this->mapToGlobal(pos_);
@@ -45,6 +47,7 @@ void FileView::showContextMenu(const QPoint& pos_)
         case 1: requestAddTrack(pos); break;
         case 2: requestAddTrack(pos+1); break;
         case 3: requestDeleteTrack(pos); break;
+        case 4: requestClear(pos); break;
         default: break;
         }
     }

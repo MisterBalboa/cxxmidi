@@ -32,6 +32,9 @@ MainWindow::MainWindow(QWidget *parent_)
             this,SLOT(onRequestAddTrack(int)));
     connect(&_fileView,SIGNAL(requestDeleteTrack(int)),
             this,SLOT(onRequestDeleteTrack(int)));
+    connect(&_fileView,SIGNAL(requestClear(int)),
+            this,SLOT(onRequestClear(int)));
+
     connect(&_trackView,SIGNAL(requestAddEvent(int)),
             this,SLOT(onRequestAddEvent(int)));
     connect(&_trackView,SIGNAL(requestDeleteEvent(int)),
@@ -152,6 +155,12 @@ void MainWindow::onOutputSelected(QAction* action_)
 void MainWindow::setOutput(int num_)
 {
     _midiOutput->openPort(num_);
+}
+
+void MainWindow::onRequestClear(int num_)
+{
+    _trackModel.setTrack(0);
+    _fileModel.clearTrack(num_);
 }
 
 void MainWindow::onRequestAddTrack(int num_)

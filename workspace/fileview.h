@@ -15,6 +15,7 @@ public:
 signals:
   void requestDeleteTrack(int num_);
   void requestAddTrack(int num_);
+  void requestClear(int num_);
 
 public slots:
   void showContextMenu(const QPoint& pos_);
