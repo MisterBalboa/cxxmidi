@@ -28,7 +28,7 @@ int main(int, char**) {
   cxxmidi::output::Default output(1);
   cxxmidi::player::PlayerSync player(&output);
 
-  cxxmidi::File file("music/chopin.mid");
+  cxxmidi::File file("music/custom_bytes.mid");
   player.SetFile(&file);
 
   player.Play();

@@ -251,9 +251,17 @@ void PlayerBase::UpdatePlayerState(unsigned int track_num, unsigned int dt) {
 }
 
 void PlayerBase::ExecEvent(const Event& event) {
+  // std::cout << "Exec event call " << event.dt_ << " - " << event.b1 << std:: endl;
+  printf("\nExec event call Dt(): dec: %d hex: %x\n", event.Dt(), event.Dt());
+  std::cout << "Event call TEXT: " << event.GetText() << std::endl;
+  std::cout << "Event call NAME: " << event.GetName() << std::endl;
+  std::cout << "Event call TYPE: " << event.GetType() << std::endl;
+  std::cout << "Is Meta() " << event.isMeta() << std::endl;
+
   if (event.IsMeta()) {
-    if (event.IsMeta(Event::kTempo))
+    if (event.IsMeta(Event::kTempo)) {
       tempo_ = cxxmidi::utils::ExtractTempo(event[2], event[3], event[4]);
+    }
 
     return;  // ignore other META events (?)
   }

@@ -62,13 +62,22 @@ void PlayerSync::Play() {
 }
 
 void PlayerSync::PlayerLoop() {
+  std::cout << "\nInvoke Player Lopp " << file_->TimeDivision() << std::endl;
   while (!Finished()) {
     unsigned int track_num = TrackPending();
     unsigned int event_num = player_state_[track_num].track_pointer_;
     uint32_t dt = player_state_[track_num].track_dt_;
+    std::cout << "dt: " << dt << std::endl;
+    std::cout << "tempo: " << tempo_ << std::endl;
+    std::cout << "time division: " << file_->TimeDivision() << std::endl;
+
     auto us = converters::Dt2us(dt, tempo_, file_->TimeDivision());
 
+    std::cout << "hearbear helper: " << heartbeat_helper_ << std::endl;
+    std::cout << "us count: " << us.count() << std::endl;
+
     while ((heartbeat_helper_ + us.count()) >= 10000) {
+      // std::cout << "heartbeat: " << heartbeat_helper_ << std::endl;
       unsigned int partial = 10000 - heartbeat_helper_;
       heartbeat_helper_ = 0;
       us -= std::chrono::microseconds(partial);
@@ -81,9 +90,20 @@ void PlayerSync::PlayerLoop() {
     }
 
     unsigned int wait = us.count() / speed_;
+
+    std::cout << "speed: " << speed_ << std::endl;
+    std::cout << "wait: " << wait << std::endl;
+
     std::this_thread::sleep_for(std::chrono::microseconds(wait));
     heartbeat_helper_ += us.count();
     played_us_ += std::chrono::microseconds(us);
+
+    std::cout << "-- Exec event: "
+              << " File: " << file_
+              << " track num: " << track_num
+              << " event num: " << event_num
+              << std::endl;
+
     ExecEvent((*file_)[track_num][event_num]);
     UpdatePlayerState(track_num, dt);
   }
